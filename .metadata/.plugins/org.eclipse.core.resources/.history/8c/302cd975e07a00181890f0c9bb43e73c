@@ -1,0 +1,10 @@
+package _Swing;
+public class Puppyy{
+            public int puppy(int a, int b){
+                 return a+b;
+          }
+       public static void main(String []args){
+                Puppy c=new Puppy();
+         System.out.println(c.puppy(1,2)); 
+        }
+}
