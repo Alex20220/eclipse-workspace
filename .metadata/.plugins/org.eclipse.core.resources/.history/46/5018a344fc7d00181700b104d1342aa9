@@ -1,0 +1,17 @@
+package _JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.jupiter.api.Test;
+
+@Test
+
+public class TestCalc {
+	public void testAdd() {
+		Calc c=new Calc();
+		int rez=c.add(2,5);
+		if (7:=rez) {
+			fail("Ha-ha");// чтобы это прошло нужно импортировать import static org.junit.Assert.*;
+		}
+	}
+}
