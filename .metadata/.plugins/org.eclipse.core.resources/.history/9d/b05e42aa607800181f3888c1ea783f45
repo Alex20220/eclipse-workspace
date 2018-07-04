@@ -1,0 +1,129 @@
+package _Swing;
+
+import java.awt.BorderLayout; // BorderLayout
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class MainFrame extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JTextField t;
+	private JTextArea a;
+	private DefaultListModel model;
+
+	public static void main(String[] args) {
+	new MainFrame();// создадим объек самого себя, а далее в конструкторе все сделаем
+	}
+	
+	// теперь создаем конструктор
+	public MainFrame() throws HeadlessException {
+		super();
+
+		setTitle("Hello");
+
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE); // DISPOSE_ON_CLOSE - при закрытии будет удаляться и очищаться память
+
+		setBackground(Color.GREEN);
+						
+		setPreferredSize(new Dimension(500, 400)); // все методы видят нужный размер
+		
+		setSize(500, 400); // при такой установке, методы не видять эти размеры
+		
+		setLocationRelativeTo(null);// устанавливает положение фрэйма в центр экрана, работает после "pack лучше"
+		/*
+		 * setVisible метод графического интерфейсаь (в случае модального диалога -
+		 * блокирует до закрытия диалога, поэтому все компоненты нужно создавать до
+		 * этого метода)
+		 */
+		addComponents(getContentPane());
+		
+		//pack();
+		
+		/*
+		 * pack метод, ставиться перед setVisible, он в памяти подготавливает всю
+		 * форму прорисовки и предотвращает глюки с отображением, но окно открывается с минимальным размером
+		 */
+		setVisible(true);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addComponents(Container contentPane) {
+
+		contentPane.setLayout(new BorderLayout());
+
+		/*
+		 * так "NORTH".... мы будем для MigLayout писать
+		 * 
+		 * contentPane.add(new JPanel(), "NORTH"); contentPane.add(new JButton("OK"),
+		 * "WEST"); contentPane.add(new JTextField("Ну......."), "SOUTH");
+		 * contentPane.add(new JTextArea("ЦЕНТР,,,,"), "CENTER");
+		 */
+		t = new JTextField("Ввведите текст");
+		contentPane.add(t, BorderLayout.SOUTH);
+				
+		
+		final ButtonAction action = new ButtonAction("Click me!");
+		
+		JButton b = new JButton(action);
+		contentPane.add(b, BorderLayout.WEST);
+		b.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("clicked");
+				a.setText(t.getText());
+				a.setBackground(new Color(255,255,0));
+				System.out.println(e.getSource()); //выдает в консоли все о нашей кнопочке
+				
+				model.addElement("CC"); // добавление элемента в лист с помощью кнопки нашей
+				
+			}
+		} );
+		
+
+		
+		a = new JTextArea("Поле отображения пустое, введите текст в поле ввода");
+		contentPane.add(a, BorderLayout.CENTER);
+		a.addPropertyChangeListener("background", new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				System.out.println(String.format("Old: %s, New: %s", evt.getOldValue(), evt.getNewValue()));
+			
+				action.setEnabled(false); //кнопка после срабатывания отключится
+			}
+		});
+		
+		//contentPane.add(new JButton(action), BorderLayout.EAST);// вторая такая же кнопка только, не будет менять цвет и т.д. для примера 14 урока
+
+		JList list = new JList();
+		list.setPreferredSize(new Dimension(100, 15));
+		contentPane.add(list, BorderLayout.EAST);
+		
+	
+		model = new DefaultListModel();
+		list.setModel(model);
+		
+		model.addElement("AA");
+		model.addElement("BB");
+		JComboBox combo = new JComboBox();	
+		combo.setPreferredSize(new Dimension(200, 70));
+		contentPane.add(combo, BorderLayout.NORTH);
+	}
+
+}
