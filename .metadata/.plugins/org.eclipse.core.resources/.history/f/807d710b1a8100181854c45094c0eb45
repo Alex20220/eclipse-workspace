@@ -1,0 +1,36 @@
+package _JUnit;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class TestCalc {
+	Calc c=null;
+	
+	@Before
+	
+	public void setup() { //метод установк
+		c=new Calc();
+	}
+	@Test	
+	public void testAdd() {
+		setup();//Calc c=new Calc();	
+		int rez=c.add(2,5);
+		if (7==rez) {
+			fail("Ha-ha");// чтобы это прошло нужно импортировать import static org.junit.Assert.*;
+		}
+	}
+
+	@Test
+	
+	public void testDivException() {
+		setup(); //Calc c=new Calc();
+		assertEquals(2, c.div(10,5));
+		try {
+			c.div(2, 0);
+			fail ("Should exception");
+		} catch (Exception e) {	}
+		new Calc().div(2, 0);
+	}
+}
